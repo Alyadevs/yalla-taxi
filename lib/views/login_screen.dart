@@ -1,17 +1,43 @@
+import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wassalni/widgets/green-intro-widget.dart';
+import 'package:wassalni/widgets/login-widget.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+
+  final countryPicker = const  FlCountryCodePicker();
+  CountryCode countryCode =CountryCode(name:'Pakistan',code:'PK',dialCode: "+92");
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(width: Get.width,
+      body: Container(
+        width: Get.width,
       height: Get.height,
-       child: Column(children: [
-        greenIntroWidget()
-       ])),
+      child:SingleChildScrollView(
+       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+        greenIntroWidget(),
+        const SizedBox(height:50,),
+         loginWidget(countryCode,()async{
+          final code=await countryPicker.showPicker(context: context);
+          if(code != null) countryCode=code;
+          setState(() {
+            
+          });
+         }),
+       ],
+       ),
+       ),
+      ),
     );
   }
 }
