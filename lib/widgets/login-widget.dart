@@ -1,7 +1,10 @@
  import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wassalni/utils/app-constants.dart';
+import 'package:wassalni/views/otp_verification_screen.dart';
 
 import 'package:wassalni/widgets/text-widget.dart';
  Widget  loginWidget(CountryCode countryCode,Function onCountryChange) {
@@ -67,6 +70,9 @@ import 'package:wassalni/widgets/text-widget.dart';
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal:10),
                 child: TextField(
+                  onTap:(){
+                    Get.to(()=>const OtpVerificationScreen());
+                  },
                   decoration:InputDecoration(
                     hintStyle: GoogleFonts.poppins(fontSize: 12,fontWeight: FontWeight.normal),
                     hintText: AppConstants.enterMobileNumber,
