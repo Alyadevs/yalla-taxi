@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "680054496945",
+    "firebase_url": "https://yalla-taxi-336b2-default-rtdb.firebaseio.com",
+    "project_id": "yalla-taxi-336b2",
+    "storage_bucket": "yalla-taxi-336b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680054496945:android:7b5b8c2a2ccc9d23400c90",
+        "android_client_info": {
+          "package_name": "com.example.wassalni"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0taHo7aOdJ3YAk8ltakUuvdPK9-whalI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

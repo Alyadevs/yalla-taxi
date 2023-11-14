@@ -1,6 +1,7 @@
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:wassalni/views/otp_verification_screen.dart';
 import 'package:wassalni/widgets/green-intro-widget.dart';
 import 'package:wassalni/widgets/login-widget.dart';
 
@@ -14,7 +15,10 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
 
   final countryPicker = const  FlCountryCodePicker();
-  CountryCode countryCode =CountryCode(name:'Pakistan',code:'PK',dialCode: "+92");
+  CountryCode countryCode =const CountryCode(name:'Pakistan',code:'PK',dialCode: "+92");
+  onSubmit(String? input){
+Get.to(()=> OtpVerificationScreen(countryCode.dialCode+input!));
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
           setState(() {
             
           });
-         }),
+         },onSubmit),
        ],
        ),
        ),

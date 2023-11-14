@@ -1,9 +1,15 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wassalni/views/Profile_settings.dart';
 import 'package:wassalni/views/login_screen.dart';
-
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(const MyApp());
 }
 
@@ -15,10 +21,12 @@ class MyApp extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         textTheme: GoogleFonts.poppinsTextTheme(textTheme),
       ),
-      home: const LoginScreen(),
+     // home: LoginScreen(),
+       home: ProfileSettingScreen(),
     );
   }
 }

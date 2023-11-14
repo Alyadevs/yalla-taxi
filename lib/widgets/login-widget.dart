@@ -7,7 +7,7 @@ import 'package:wassalni/utils/app-constants.dart';
 import 'package:wassalni/views/otp_verification_screen.dart';
 
 import 'package:wassalni/widgets/text-widget.dart';
- Widget  loginWidget(CountryCode countryCode,Function onCountryChange) {
+ Widget  loginWidget(CountryCode countryCode,Function onCountryChange,Function onSubmit) {
  return Padding(
   padding :const EdgeInsets.symmetric(horizontal: 20),
   
@@ -23,17 +23,7 @@ import 'package:wassalni/widgets/text-widget.dart';
          Container(
           width:double.infinity,
           height:55,
-          decoration: BoxDecoration(
-            color:Colors.white,
-            boxShadow:[
-              BoxShadow(
-                color:Colors.black.withOpacity(0.05),
-                spreadRadius:3,
-                blurRadius:3
-              )
-            ],
-            borderRadius: BorderRadius.circular(8)
-          ),
+          
           child: Row(
             children: [
             Expanded(
@@ -53,7 +43,7 @@ import 'package:wassalni/widgets/text-widget.dart';
                        ,),
                        textWidget(text: countryCode.dialCode),
                       // const SizedBox(width:10,),
-                       Icon(Icons.keyboard_arrow_down_rounded)
+                       const Icon(Icons.keyboard_arrow_down_rounded)
                        
                   ]
 
@@ -70,9 +60,10 @@ import 'package:wassalni/widgets/text-widget.dart';
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal:10),
                 child: TextField(
-                  onTap:(){
-                    Get.to(()=>const OtpVerificationScreen());
-                  },
+                  // onTap:(){
+                  //   Get.to(()=>const OtpVerificationScreen());
+                  // },
+                  onSubmitted:(String? input)=>onSubmit(input),
                   decoration:InputDecoration(
                     hintStyle: GoogleFonts.poppins(fontSize: 12,fontWeight: FontWeight.normal),
                     hintText: AppConstants.enterMobileNumber,
@@ -101,7 +92,7 @@ import 'package:wassalni/widgets/text-widget.dart';
               text: AppConstants.termsOfService + " ",
                style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
               
-               ),TextSpan(
+               ),const TextSpan(
                 text: "and" ,
                ),
                TextSpan(
