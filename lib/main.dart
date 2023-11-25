@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:wassalni/views/Profile_settings.dart';
 import 'package:wassalni/views/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'Controller/auth_controller.dart';
 import 'firebase_options.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +19,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     AuthController authController=Get.put(AuthController());
+     authController.decideRoute();
     final textTheme = Theme.of(context).textTheme;
 
     return GetMaterialApp(

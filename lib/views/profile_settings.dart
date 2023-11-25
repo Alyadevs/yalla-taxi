@@ -1,12 +1,18 @@
+//import 'dart:ffi';
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:path/path.dart' as Path;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 
 // import 'package:path/path.dart' as Path;
 import 'package:wassalni/Controller/auth_controller.dart';
 import 'package:wassalni/utils/app_colors.dart';
+import 'package:wassalni/views/Home.dart';
 import 'package:wassalni/widgets/green-intro-widget.dart';
 
 class ProfileSettingScreen extends StatefulWidget {
@@ -21,9 +27,25 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
   TextEditingController homeController = TextEditingController();
   TextEditingController businessController = TextEditingController();
   TextEditingController shopController = TextEditingController();
-
   
+AuthController authController=Get.find<AuthController>();
 
+  final ImagePicker _picker=ImagePicker();
+  File? selectedImage;
+  getImage(ImageSource source)async{
+    final XFile? image=await _picker.pickImage(source: source);
+    if(image!=null){
+      selectedImage = File(image.path);
+      setState((){
+
+      });
+    }
+     }
+
+   
+      
+    
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,11 +57,16 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
             Container(
               height: Get.height * 0.4,
               child: Stack(
+               
                 children: [
                   greenIntroWidgetWithoutLogos(),
                   Align(
                     alignment: Alignment.bottomCenter,
-                    child:Container(
+                    child:InkWell(
+                     onTap:(){
+                  getImage(ImageSource.camera);
+                },
+                    child:selectedImage == null? Container(
                       width:120,
                       height:120,
                       margin:const EdgeInsets.only(bottom:20),
@@ -57,6 +84,18 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
 
 
 
+                    ):Container(
+                              width: 120,
+                              height: 120,
+                              margin: EdgeInsets.only(bottom: 20),
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: FileImage(selectedImage!),
+                                      fit: BoxFit.fill),
+                                  shape: BoxShape.circle,
+                                  color: Color(0xffD6D6D6)),
+                            ),
+
                     ),
                   ),
                 ],
@@ -68,22 +107,46 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
             ),
             Container(padding:EdgeInsets.symmetric(horizontal:23),
             child:Column(children: [
-              TextFieldWidget('Name',Icons.person_outlined,nameController),
+              TextFieldWidget('Name',Icons.person_outlined,nameController,(String? input){
+                if(input!.isEmpty){
+                  return 'Name is required!';
+                }
+                if(input!.length<5){
+                  return 'Please enter a valid name!';
+                }
+
+                return null;
+
+              }),
               const SizedBox(
                 height:10,
               ),
-              TextFieldWidget('Home Adress',Icons.home_outlined,homeController),
+              TextFieldWidget('Home Adress',Icons.home_outlined,homeController,(String? input){
+                
+              }),
               const SizedBox(
                 height:10,
               ),
-              TextFieldWidget('Business Adress',Icons.card_travel,businessController),
+              TextFieldWidget('Business Adress',Icons.card_travel,businessController,(String? input){
+                if()
+              }),
               const SizedBox(
                 height:10,
               ),
-               TextFieldWidget('Shopping Center',Icons.shopping_cart_outlined,shopController),
+               TextFieldWidget('Shopping Center',Icons.shopping_cart_outlined,shopController ,(String? input){
+                
+              }),
                const SizedBox(height:30,
                ),
-               greenButton('Submit',(){}),
+            Obx(() => authController.isProfileUploading.value?Center(child:CircularProgressIndicator(),) : greenButton('Submit',(){
+              
+               if(selectedImage==null){
+                Get.snackbar('warning', 'Please add your image');
+                    return;
+               }
+                authController.isProfileUploading(true);
+               authController.storeUserInfo(selectedImage!,nameController.text,homeController.text,businessController.text,shopController.text);
+               })),
             //  )
             ],
             ),
@@ -95,7 +158,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
 
  
  
- Widget TextFieldWidget(String title, IconData iconData, TextEditingController controller) {
+ Widget TextFieldWidget(String title, IconData iconData, TextEditingController controller ,Function validator ) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -124,6 +187,11 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
           borderRadius: BorderRadius.circular(8),
         ),
         child: TextField(
+
+          validator: (String? input){
+             validator(input);
+
+          },
           controller: controller, // Add this line to link the controller
           style: GoogleFonts.poppins(
             fontSize: 14,
